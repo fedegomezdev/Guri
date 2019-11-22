@@ -28,20 +28,18 @@ class ObraSocial(models.Model):
         return self.nombre    
 
 
-
-
 class Medico(models.Model):
     id = models.AutoField(primary_key = True)
     nombre = models.CharField('Nombre del Medico', max_length=55 , null = False, blank= False)
     apellido = models.CharField('Apellido del Medico', max_length=55 , null = False, blank= False)
-    tipoDocumento = models.CharField(max_length=12 , null = True, blank= True)
+    tipoDocumento = models.CharField(max_length= 20 ,null = True, blank= True)
     numeroDoc = models.CharField( max_length=8, null = False, blank= False)
     telefono = models.CharField('Telefono', max_length=20, null = True, blank = True)
     celular = models.CharField('Celular', max_length=20, null = True, blank = True)
     horaIng = models.DateField(null = True, blank = True)
     horaSalida = models.DateField(null = True, blank = True)
     turnoMax = models.IntegerField(null = True, blank = True)
-    categoria = models.ForeignKey(Categoria, on_delete = models.CASCADE, null = True)
+    categoria = models.ForeignKey(Categoria, on_delete = models.CASCADE, null = True, blank= True)
     estado = models.BooleanField(default = True)
     fechaCreacion = models.DateField('Fecha creacion', default = timezone.now)
     fechaNacimiento = models.DateField('Fecha nacimiento', null = True)
@@ -66,7 +64,7 @@ class Paciente(models.Model):
     id = models.AutoField(primary_key = True)
     nombre = models.CharField('Nombre del Paciente', max_length=55 , null = False, blank= False)
     apellido = models.CharField('Apellido del Paciente', max_length=55 , null = False, blank= False)
-    tipoDocumento = models.CharField(max_length=12 , null = True, blank= True)
+    tipoDocumento = models.CharField(max_length= 20 ,null = True, blank= True)
     numeroDoc = models.CharField(max_length=8)
     telefono = models.CharField(max_length=20, null = True, blank = True)
     celular = models.CharField(max_length=20, null = True, blank = True)
@@ -92,8 +90,8 @@ class Paciente(models.Model):
 
 class Turno(models.Model):
     id = models.AutoField(primary_key = True)
-    medico = models.ForeignKey(Medico, on_delete = models.CASCADE)
-    paciente = models.ForeignKey(Paciente, on_delete = models.CASCADE)
+    medico = models.ForeignKey(Medico, on_delete = models.CASCADE , null = True, blank = True)
+    paciente = models.ForeignKey(Paciente, on_delete = models.CASCADE, null = True, blank = True)
     horario = models.DateField()
     fechaCreacion = models.DateField(default = timezone.now)
 
