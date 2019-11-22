@@ -1,0 +1,59 @@
+{% extends 'historiaClinica/index.html' %}
+{% load static %}
+{% block titulo %} Crear Paciente {% endblock titulo %}
+{% block tituloPrincipal %} Crear Paciente {% endblock tituloPrincipal %}
+{% block contenidoPrincipal %} 
+<div class="card">
+    <div class="card-header">
+        <strong>Formulario de Registro</strong>
+    </div>
+     <div class="card-body card-block">
+        <form method="post" class="form-horizontal">
+                {% csrf_token %}   
+            <div class="row form-group">
+                <div class="col col-md-3 ">{{ form.nombre.label }}</div>
+                <div class="col-12 col-md-9">{{ form.nombre }}</div>
+            </div>
+            <div class="row form-group">
+                <div class="col col-md-3">{{ form.apellido.label }}</div>
+                <div class="col-12 col-md-9">{{ form.apellido }}</div>
+            </div>
+            <div class="row form-group">
+                <div class="col col-md-3">{{ form.tipoDocumento.label }}</div>
+                <div class="col-12 col-md-9">{{ form.tipoDocumento }}</div>
+            </div>
+            <div class="row form-group">
+                <div class="col col-md-3">{{ form.numeroDoc.label }}</div>
+                <div class="col-12 col-md-9">{{ form.numeroDoc }}</div>
+            </div>
+            <div class="row form-group">
+                <div class="col col-md-3">{{ form.telefono.label }}</div>
+                <div class="col-12 col-md-9">{{ form.telefono }}</div>
+            </div>
+            <div class="row form-group">
+                <div class="col col-md-3">{{ form.celular.label }}</div>
+                <div class="col-12 col-md-9">{{ form.celular }}</div>
+            </div>
+            <div class="row form-group">
+                <div class="col col-md-3">{{ form.fechaNacimiento.label }}</div>
+                <div class="col-12 col-md-9">{{ form.fechaNacimiento }}</div>
+            </div>
+            <div class="row form-group">
+                <div class="col col-md-3">{{ form.correo.label }}</div>
+                <div class="col-12 col-md-9">{{ form.correo }}</div>
+            </div>
+            <div class="row form-group">
+                <div class="col col-md-3">{{ form.obraSocial.label }}</div>
+                <div class="col-12 col-md-9">{{ form.obraSocial }}</div>
+            </div>
+
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">Registrar</button>
+                <button type="reset" class="btn btn-danger">Cancelar</button>
+            </div>
+        
+    </div>
+</div>
+     
+    </form>
+{% endblock contenidoPrincipal %}
