@@ -1,13 +1,13 @@
 {% extends 'historiaClinica/index.html' %}
 {% load static %}
-{% block titulo %} Pacientes {% endblock titulo %}
-{% block tituloPrincipal %} Pacientes {% endblock tituloPrincipal %}
+{% block titulo %} Medicos {% endblock titulo %}
+{% block tituloPrincipal %} Medicos {% endblock tituloPrincipal %}
 {% block contenidoPrincipal %} 
 <div class="row">
     <div class="col-12">
       <div class="card">
         <div class="card-header">
-          <h3 class="card-title">Pacientes</h3>
+          <h3 class="card-title">Medicos{% if categoria %} especialistas en {{categoria.nombre}} {% endif %}</h3>
 
           <div class="card-tools">
             <form method="GET">
@@ -18,7 +18,7 @@
                 <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
               </div>
             </div>
-            </form>
+          </form>
           </div>
         </div>
         <!-- /.card-header -->
@@ -31,23 +31,24 @@
                 <th>Nombre</th>
                 <th>Documento</th>
                 <th>Fecha Nacimiento</th>
-                <th>Obra Social</th>
+                <th>Categoria</th>
                 <th>Acciones</th>
               </tr>
             </thead>
             <tbody>
-                {% for paciente in pacientes %}
+                {% for medico in medicos %}
                 
                     <tr>
-                        <td>{{paciente.id}}</td>
-                        <td>{{paciente.nombre}} {{paciente.apellido}}</td>
-                        <td>{{paciente.numeroDoc}}</td>
-                        <td>{{paciente.fechaNacimiento}}</td>
-                        <td>{{paciente.obraSocial}}</td>
-                        <td><a href="{% url 'modificar-paciente' paciente.id %}" class="btn btn-primary mr-2">Modificar</a> <a href="{% url 'eliminar-paciente' paciente.id %}" onClick="return confirm('Seguro desea eliminar paciente?')" class="btn btn-danger">Eliminar</a></td>
+                        <td>{{medico.id}}</td>
+                        <td>{{medico.nombre}} {{medico.apellido}}</td>
+                        <td>{{medico.numeroDoc}}</td>
+                        <td>{{medico.fechaNacimiento}}</td>
+                        <td>{{medico.categoria}}</td>
+                        <td><a href="{% url 'modificar-medico' medico.id %}" class="btn btn-primary mr-2">Modificar</a> <a href="{% url 'eliminar-medico' medico.id %}" onClick="return confirm('Seguro desea eliminar medico?')" class="btn btn-danger">Eliminar</a></td>
                     </tr>
               {% endfor %}
-              
+             
+            
             </tbody>
           </table>
         </div>

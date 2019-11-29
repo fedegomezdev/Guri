@@ -1,7 +1,7 @@
 {% extends 'historiaClinica/index.html' %}
 {% load static %}
-{% block titulo %} Crear Paciente {% endblock titulo %}
-{% block tituloPrincipal %} Crear Paciente {% endblock tituloPrincipal %}
+{% block titulo %} Crear Medico {% endblock titulo %}
+{% block tituloPrincipal %} Crear Medico {% endblock tituloPrincipal %}
 {% block contenidoPrincipal %} 
 <div class="card">
     <div class="card-header">
@@ -48,17 +48,39 @@
                 <div class="col-12 col-md-9">{{ form.correo }}</div>
             </div>
             <div class="row form-group">
-                <div class="col col-md-3">{{ form.obraSocial.label }}</div>
-                <div class="col-12 col-md-9">{{ form.obraSocial }}</div>
+                <div class="col col-md-3">{{ form.categoria.label }}</div>
+                <div class="col-12 col-md-9">{{ form.categoria }}</div>
+            </div>
+            <div class="row form-group">
+                <div class="col col-md-3">{{ form.horaIng.label }}</div>
+                <div class="col-12 col-md-9">{{ form.horaIng }}</div>
+            </div>
+            <div class="row form-group">
+                <div class="col col-md-3">{{ form.horaSalida.label }}</div>
+                <div class="col-12 col-md-9">{{ form.horaSalida}}</div>
+            </div>
+            <div class="row form-group">
+                <div class="col col-md-3">{{ form.turnoMax.label }}</div>
+                <div class="col-12 col-md-9">{{ form.turnoMax }}</div>
             </div>
 
             <div class="text-center">
-                <button type="submit" class="btn btn-primary">Registrar</button>
+                <button type="submit" onclick="asd()" class="btn btn-primary">Registrar</button>
                 <button type="reset" class="btn btn-danger">Cancelar</button>
             </div>
         
     </div>
 </div>
      
+                <script>
+                function asd(){
+                var doc = document.getElementById("numeroDoc");
+                if(doc.value == ""){
+                  
+                  doc.style.border = " 1px solid red";
+                } 
+                }
+                </script>
+
     </form>
 {% endblock contenidoPrincipal %}
