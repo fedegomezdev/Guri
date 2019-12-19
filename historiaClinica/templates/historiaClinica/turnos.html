@@ -1,0 +1,60 @@
+{% extends 'historiaClinica/index.html' %}
+{% load static %}
+{% block titulo %} Turnos {% endblock titulo %}
+{% block tituloPrincipal %} Turnos {% endblock tituloPrincipal %}
+{% block contenidoPrincipal %} 
+
+<!-- Main content -->
+<section class="content">
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Turnos</h3>
+                <a class="btn btn-primary ml-5" href="{% url 'crear-turno' %}">Nuevo turno</a>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body table-responsive">
+                <table id="example2" class="table table-bordered table-striped">
+                  <thead>        
+                  <tr>
+                    <!--<th>ID</th>--> 
+                    <th>Horario</th>
+                    <th>Fecha</th>
+                    <th>Paciente</th>
+                    <th>Medico</th>
+                    <th>Estado</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                {% for turno in turnos %}
+                  <tr>
+                   <!--<td>{{turno.id}}</td>--> 
+                    <td>{{turno.hora}}</td>
+                    <td>{{turno.horario}}</td>
+                    <td>{{turno.paciente}}</td>
+                    <td>{{turno.medico}}</td>
+                    {% if turno.estado == False %}
+                    <td class="bg-secondary">Pendiente </td>
+                    {% else %}
+                    <td class="bg-success">Realizado</td>
+                    {% endif %}
+                  </tr>
+                {% endfor %}  
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+      </section>
+      <!-- /.content -->
+    </div>
+
+    
+{% endblock contenidoPrincipal %}

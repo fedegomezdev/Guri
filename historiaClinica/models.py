@@ -16,6 +16,8 @@ class Categoria(models.Model):
     def __str__(self):
         return self.nombre
 
+
+
 class ObraSocial(models.Model):
     id = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length = 255)
@@ -28,6 +30,8 @@ class ObraSocial(models.Model):
         return self.nombre    
 
 
+
+
 class Medico(models.Model):
     id = models.AutoField(primary_key = True)
     nombre = models.CharField('Nombre del Medico', max_length=55 , null = False, blank= False)
@@ -36,10 +40,10 @@ class Medico(models.Model):
     numeroDoc = models.CharField( max_length=8, null = False, blank= False)
     telefono = models.CharField('Telefono', max_length=20, null = True, blank = True)
     celular = models.CharField('Celular', max_length=20, null = True, blank = True)
-    horaIng = models.DateField(null = True, blank = True)
-    horaSalida = models.DateField(null = True, blank = True)
+    horaIng = models.CharField(max_length=5,null = True, blank = True)
+    horaSalida = models.CharField(max_length=5,null = True, blank = True)
     turnoMax = models.IntegerField(null = True, blank = True)
-    categoria = models.ForeignKey(Categoria, on_delete = models.CASCADE, null = True, blank= True)
+    categoria = models.ManyToManyField(Categoria, null = True, blank= True)
     estado = models.BooleanField(default = True)
     fechaCreacion = models.DateField('Fecha creacion', default = timezone.now)
     fechaNacimiento = models.DateField('Fecha nacimiento', null = True)
@@ -60,6 +64,7 @@ class Medico(models.Model):
         self.save()
 
 
+
 class Paciente(models.Model):
     id = models.AutoField(primary_key = True)
     nombre = models.CharField('Nombre del Paciente', max_length=55 , null = False, blank= False)
@@ -72,12 +77,13 @@ class Paciente(models.Model):
     fechaNacimiento = models.DateField('Fecha nacimiento', null = True)
     correo = models.EmailField('Email', blank = True, null = True )
     estado = models.BooleanField(default=True)
-    obraSocial = models.ForeignKey(ObraSocial, on_delete=models.CASCADE , null = True , blank = True)
+    obraSocial = models.ManyToManyField(ObraSocial , null = True , blank = True)
     fechaBaja = models.DateField(blank=True, null=True)
 
     class Meta:
         verbose_name = 'Paciente'
         verbose_name_plural = 'Pacientes'
+        ordering = ['-id']
 
     def __str__(self):
         return '%s %s' %(self.nombre , self.apellido)
@@ -88,20 +94,26 @@ class Paciente(models.Model):
         self.save()
 
 
+
+
 class Turno(models.Model):
     id = models.AutoField(primary_key = True)
-    medico = models.ForeignKey(Medico, on_delete = models.CASCADE , null = True, blank = True)
-    paciente = models.ForeignKey(Paciente, on_delete = models.CASCADE, null = True, blank = True)
+    paciente = models.ForeignKey(Paciente, on_delete = models.CASCADE, null = True) 
+    medico = models.ForeignKey(Medico, on_delete = models.CASCADE, null = True )    
     horario = models.DateField()
     fechaCreacion = models.DateField(default = timezone.now)
+    descripcion = models.TextField( null = True)
+    estado = models.BooleanField('Completo/Pendiente', default=False)
+    hora = models.TimeField(null = True)
 
     class Meta:
         verbose_name = 'Turno'
         verbose_name_plural = 'Turnos'
+        ordering = ['-horario']
 
 
     def __str__(self):
-        return self.paciente
+        return '%s %s' %(self.paciente, self.horario)
 
 
 
@@ -121,4 +133,3 @@ class Historial(models.Model):
 
 
 
-    

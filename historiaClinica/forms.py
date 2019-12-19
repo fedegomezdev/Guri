@@ -1,5 +1,5 @@
 from django import forms
-from .views import Paciente,Medico, Categoria
+from .views import Paciente,Medico, Categoria, ObraSocial, Turno
 
 class PacienteForm(forms.ModelForm):
     class Meta:
@@ -75,7 +75,7 @@ class PacienteForm(forms.ModelForm):
                     'id': 'correo'
                 }
             ),
-            'obraSocial': forms.Select(
+            'obraSocial': forms.SelectMultiple(
                 attrs = {
                     'class':'form-control',
                     'placeholder':'Obra Social',
@@ -165,24 +165,24 @@ class MedicoForm(forms.ModelForm):
                     'id': 'correo'
                 }
             ),
-            'categoria': forms.Select(
+            'categoria': forms.SelectMultiple(
                 attrs = {
                     'class':'form-control',
                     'placeholder':'Categoría',
                     'id': 'categoria'
                 }
             ),
-            'horaIng': forms.DateInput(
+            'horaIng': forms.TextInput(
                 attrs = {
                     'class':'form-control',
-                    'placeholder':'Hora de Ingreso',
+                    'placeholder':'HH:MM',
                     'id': 'horaIng'
                 }
             ),
-            'horaSalida': forms.DateInput(
+            'horaSalida': forms.TextInput(
                 attrs = {
                     'class':'form-control',
-                    'placeholder':'Hora de Salida',
+                    'placeholder':'HH:MM',
                     'id': 'horaSalida'
                 }
             ),
@@ -198,6 +198,7 @@ class MedicoForm(forms.ModelForm):
 
 
 class CategoriaForm(forms.ModelForm):
+
     class Meta:
         model = Categoria
         fields = ['nombre']
@@ -209,4 +210,74 @@ class CategoriaForm(forms.ModelForm):
                     'id': 'nombre'
                 }
             )
+            }
+
+class ObraSocialForm(forms.ModelForm):
+    class Meta:
+        model = ObraSocial
+        fields = ['nombre']
+        widgets = {
+            'nombre': forms.TextInput(
+                attrs = {
+                    'class':'form-control col col-md-3 mr-2',
+                    'placeholder':'Ingrese el nombre',
+                    'id': 'nombre'
+                }
+            )
+            }            
+
+
+class TurnoForm(forms.ModelForm):
+    class Meta:
+        model = Turno
+        fields = ['paciente', 'medico', 'horario', 'hora', 'descripcion']
+        labels = {
+            'paciente': 'Paciente',
+            'medico': 'Medico',
+            'horario': 'Fecha',
+            'hora': 'Hora',
+            'descripcion': 'Descripcion'
+        }
+        widgets = {
+            'paciente': forms.TextInput(
+                attrs = {
+                    'class':'form-control col col-md-6 mr-2',
+                    'placeholder':'Ingrese el nombre del paciente',
+                    'id': 'paciente'
+                }
+            ),
+            'medico': forms.TextInput(
+                attrs = {
+                    'class':'form-control col col-md-6 mr-2',
+                    'placeholder':'Ingrese el nombre del medico',
+                    'id': 'medico'
+                }
+            ),
+            'horario': forms.DateInput(
+                attrs = {
+                    'class':'form-control col col-md-3 mr-2',
+                    'placeholder':'DD/MM/AAAA',
+                    'id': 'fecha',
+                    'onkeyup': 'mascara(this,"/",patron,true)',
+                    'maxlength': '10'
+                }
+            ),
+            'hora': forms.TextInput(
+                attrs = {
+                    'class':'form-control col col-md-3 mr-2',
+                    'placeholder':'HH:MM',
+                    'id': 'hora',
+                    'onkeyup': 'mascara(this,":",patron2,true)',
+                    'maxlength': '5'
+                }
+            ),
+            'descripcion': forms.Textarea(
+                attrs = {
+                    'class':'form-control col col-md-6 mr-2',
+                    'placeholder':'Descripcion',
+                    'id': 'descripcion',
+                    'rows': '5',
+                    'cols':'5'
+                }
+            ),
             }

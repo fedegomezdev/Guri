@@ -96,7 +96,7 @@
           </li>
           
           <li class="nav-item has-treeview">
-            <a href="#" class="nav-link">
+            <a href="{% url 'turnos' %}" class="nav-link">
               <i class="nav-icon far fa-calendar-alt"></i>
               <p>
                 Turnos                
@@ -168,7 +168,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="pages/gallery.html" class="nav-link">
+            <a href="{% url 'obrasocial' %}" class="nav-link">
               <i class="nav-icon far fa-image"></i>
               <p>
                 Obra Social
@@ -180,29 +180,10 @@
               <i class="nav-icon fas fa-book"></i>
               <p>
                 Historial Clínico
-                <i class="fas fa-angle-left right"></i>
+                
               </p>
             </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="pages/mailbox/mailbox.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Inbox</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/mailbox/compose.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Compose</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="pages/mailbox/read-mail.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Read</p>
-                </a>
-              </li>
-            </ul>
+          
           </li>
           
           <li class="nav-item has-treeview">
@@ -254,7 +235,7 @@
             <!-- small box -->
             <div class="small-box bg-info">
               <div class="inner">
-                <h3>150</h3>
+                <h3>{{turnos.count }}</h3>
 
                 <p>Turnos</p>
               </div>

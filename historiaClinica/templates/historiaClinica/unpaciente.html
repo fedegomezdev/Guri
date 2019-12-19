@@ -1,0 +1,137 @@
+{% extends 'historiaClinica/index.html' %}
+{% load static %}
+{% block titulo %} Perfil {% endblock titulo %}
+{% block tituloPrincipal %} Perfil de {{ paciente.nombre }} {{ paciente.apellido }} {% endblock tituloPrincipal %}
+{% block contenidoPrincipal %} 
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-3">
+
+          <!-- Profile Image -->
+          <div class="card card-primary card-outline">
+            <div class="card-body box-profile">
+              <div class="text-center">
+                <img class="profile-user-img img-fluid img-circle"
+                     src="{% static 'dist/img/user4-128x128.jpg' %}"
+                     alt="User profile picture">
+              </div>
+
+              <h3 class="profile-username text-center">{{ paciente.nombre }} {{ paciente.apellido }}</h3>
+
+              <p class="text-muted text-center">Paciente</p>
+
+              <ul class="list-group list-group-unbordered mb-3">
+                <li class="list-group-item">
+                  <b>Visitas</b> <a class="float-right">12</a>
+                </li>
+                <li class="list-group-item">
+                  <b>Documento</b> <a class="float-right">{{paciente.numeroDoc}}</a>
+                </li>
+                <li class="list-group-item">
+                  <b>Teléfonos</b> <a class="float-right">{{paciente.telefono}} - {{paciente.celular}}</a>
+                </li>
+              </ul>
+
+              <a href="{% url 'modificar-paciente' paciente.id %}" class="btn btn-primary btn-block"><b>Modificar</b></a>
+            </div>
+            <!-- /.card-body -->
+          </div>
+          <!-- /.card -->
+
+          <!-- About Me Box -->
+          <div class="card card-primary">
+            <div class="card-header">
+              <h3 class="card-title">Más Información</h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+              <strong><i class="fas fa-book mr-1"></i> Correo</strong>
+
+              <p class="text-muted">
+                {{paciente.correo}}
+              </p>
+
+              <hr>
+
+              <strong><i class="fas fa-map-marker-alt mr-1"></i> Localidad</strong>
+
+              <p class="text-muted">Malibu, California</p>
+
+              <hr>
+
+              <strong><i class="fas fa-pencil-alt mr-1"></i> Obra Social</strong>
+                
+              <p class="text-muted">
+                {% for obra in paciente.obraSocial.all %}
+                <span class="tag tag-danger">{{ obra }} -</span>
+                {% endfor %}               
+              </p>
+
+              <hr>
+
+              <strong><i class="far fa-file-alt mr-1"></i> Fecha de Nacimiento</strong>
+
+              <p class="text-muted">{{paciente.fechaNacimiento}}</p>
+            </div>
+            <!-- /.card-body -->
+          </div>
+          <!-- /.card -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-9">
+          <div class="card">
+            <div class="card-header p-2">
+              <ul class="nav nav-pills">
+                <li class="nav-item"><a class="nav-link active" href="#activity" data-toggle="tab">Turnos</a></li>
+                
+              </ul>
+            </div><!-- /.card-header -->
+            <div class="card-body">
+              <div class="tab-content">
+                <div class="active tab-pane" id="activity">
+                  
+                  <!-- Post -->
+                  {% if turnos is None %} No tiene Turnos {% endif %}
+                  {% for turno in turnos %}
+                  <div class="post">
+                    <div class="user-block">
+                      <img class="img-circle img-bordered-sm" src="{% static 'dist/img/user1-128x128.jpg' %}" alt="user image">
+                      <span class="username">
+                        <a href="{% url 'un-medico' turno.medico.id %}">Dr. {{turno.medico}} 
+                          {% if turno.estado %}
+                          <span class="text-warning"><i>- Completo</i></span>
+                          {% else %}
+                          <span class="text-danger"><i>- Pendiente </i></span>
+                          {% endif %}
+                        </a>
+                      </span>
+                      <span class="description">Visita {{turno.horario}}</span>
+                    </div>
+                    <!-- /.user-block -->
+                    <p>
+                      {{turno.descripcion}}
+                    </p>
+
+                    <p>
+                      <a href="#" class="link-black text-sm mr-2"><i class="fas fa-share mr-1"></i> Ver</a>
+                     
+                    </p>
+                  </div>
+     
+                  {% endfor %}
+                
+              <!-- /.tab-content -->
+            </div><!-- /.card-body -->
+          </div>
+          <!-- /.nav-tabs-custom -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </div><!-- /.container-fluid -->
+  </section>
+  <!-- /.content -->
+</div>
+{% endblock contenidoPrincipal %}
