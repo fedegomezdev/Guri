@@ -163,7 +163,34 @@ def crearTurno(request):
         if form.is_valid():
             form.save() 
             return redirect('turnos')
-
     else:
         form = TurnoForm()
     return render(request , 'historiaClinica/crear-turno.html' , {'form': form})  
+
+
+
+def turnoPrueba(request):
+    if request.method == 'POST':   
+        dniPaciente= request.POST['dniP']
+        dniMedico = request.POST['dniM']
+        fecha = request.POST['fecha']
+        hora= request.POST['hora']
+        descripcion = request.POST['descripcion']        
+        paciente = Paciente.objects.get(numeroDoc = dniPaciente)
+        medico = Medico.objects.get(numeroDoc = dniMedico)
+        try:
+            Turno.objects.get_or_create(paciente= Paciente(id=paciente.id), medico= Medico(id=medico.id), hora = hora , horario = fecha, descripcion = descripcion)
+            return redirect('turnos')
+        except:
+            error = 'Complete los campos de forma correcta'
+            return render(request, 'historiaClinica/turnoprueba.html', {'error': error})    
+        """  turno.paciente = paciente.id
+        turno.medico = medico.id
+        turno.hora = hora
+        turno.fecha = fecha
+        turno.save() """
+        
+    return render(request, 'historiaClinica/turnoprueba.html')       
+
+        
+         

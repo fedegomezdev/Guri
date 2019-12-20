@@ -20,4 +20,5 @@ urlpatterns = [
     path('obrasocial/pacientes-obrasocial/<int:id>', views.pacientesObra , name='pacientes-obrasocial'),
     path('turnos/', views.turnos, name='turnos'),
     path('turnos/crear-turno', views.crearTurno, name='crear-turno'),
+    path('turnos/turnoprueba', views.turnoPrueba, name='turnoprueba')
 ]
