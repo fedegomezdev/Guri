@@ -20,5 +20,7 @@ urlpatterns = [
     path('obrasocial/pacientes-obrasocial/<int:id>', views.pacientesObra , name='pacientes-obrasocial'),
     path('turnos/', views.turnos, name='turnos'),
     path('turnos/crear-turno', views.crearTurno, name='crear-turno'),
-    path('turnos/turnoprueba', views.turnoPrueba, name='turnoprueba')
+    path('turnos/eliminar-turno/<int:id>', views.eliminarTurno , name='eliminar-turno'),
+    path('turnos/crear-turno/<int:id>', views.turnoPorPaciente , name='turnoPorPaciente'),
+    path('turnos/crear-turno-medico/<int:id>', views.turnoPorMedico , name='turnoPorMedico'),
 ]

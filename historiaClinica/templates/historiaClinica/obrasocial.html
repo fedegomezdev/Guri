@@ -33,9 +33,13 @@
           
               <tr>
                   <td>{{obra.id}}</td>
-                  <td>{{obra.nombre}}</td>
+                  <td><input type="text" value="{{obra.nombre}}" id="nombre" style="border: none;" disabled ></td>
                  
-                  <td><a href="{% url 'pacientes-obrasocial' obra.id %}" class="btn btn-success mr-2">Ver Pacientes</a> <a href="" class="btn btn-primary mr-2">Modificar</a></td>
+                  <td>
+                    <a href="{% url 'pacientes-obrasocial' obra.id %}" class="btn btn-success mr-2">Ver Pacientes</a> 
+                    <button onclick="modificar()"  class="btn btn-primary mr-2">Modificar</button>
+                    <a href="" id="modifica" class="btn btn-info mr-2" hidden>Aceptar</a>
+                  </td>
               </tr>
         {% endfor %}
               
@@ -45,12 +49,27 @@
 
     <script>
         var form = document.getElementById("formulario")
+        var modifica = document.getElementById("modifica")
+        
         
         function mostrar(){
             form.hidden = false;
         }
         function ocultar(){
             form.hidden = true
+        }
+
+        function modificar(){
+            
+          document.getElementById("nombre").disabled = false ;
+
+            if (modifica.hidden == false) { 
+              modifica.hidden = true
+            }else { 
+              modifica.hidden = false;
+            }
+
+           
         }
             
     </script>

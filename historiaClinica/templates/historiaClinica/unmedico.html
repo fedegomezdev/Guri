@@ -1,6 +1,6 @@
 {% extends 'historiaClinica/index.html' %}
 {% load static %}
-{% block titulo %} Perfil {% endblock titulo %}
+{% block titulo %} Perfil del Médico {% endblock titulo %}
 {% block tituloPrincipal %} Perfil de {{ medico.nombre }} {{ medico.apellido }} {% endblock tituloPrincipal %}
 {% block contenidoPrincipal %} 
 <!-- Main content -->
@@ -24,7 +24,7 @@
 
               <ul class="list-group list-group-unbordered mb-3">
                 <li class="list-group-item">
-                  <b>Visitas</b> <a class="float-right">12</a>
+                  <b>Turnos Pendientes</b> <a class="float-right">{{turnos.count}}</a>
                 </li>
                 <li class="list-group-item">
                   <b>Documento</b> <a class="float-right">{{medico.numeroDoc}}</a>

@@ -44,7 +44,12 @@
                         <td>{{medico.numeroDoc}}</td>
                         <td>{{medico.fechaNacimiento}}</td>
                         <td>{% for categoria in medico.categoria.all %} {{ categoria }} - {% endfor %}</td>
-                        <td><a href="{% url 'un-medico' medico.id %}" class="btn btn-success mr-2">Ver</a><a href="{% url 'modificar-medico' medico.id %}" class="btn btn-primary mr-2">Modificar</a> <a href="{% url 'eliminar-medico' medico.id %}" onClick="return confirm('Seguro desea eliminar medico?')" class="btn btn-danger">Eliminar</a></td>
+                        <td>
+                          <a href="{% url 'un-medico' medico.id %}" class="btn btn-success mr-2">Ver</a>
+                          <a href="{% url 'turnoPorMedico' medico.id %}" class="btn btn-info mr-2">Turno</a>
+                          <a href="{% url 'modificar-medico' medico.id %}" class="btn btn-primary mr-2">Modificar</a>
+                          <a href="{% url 'eliminar-medico' medico.id %}" onClick="return confirm('Seguro desea eliminar medico?')" class="btn btn-danger">Eliminar</a>
+                        </td>
                     </tr>
               {% endfor %}
              

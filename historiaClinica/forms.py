@@ -65,7 +65,8 @@ class PacienteForm(forms.ModelForm):
                 attrs = {
                     'class':'form-control',
                     'placeholder':'DD/MM/AAAA',
-                    'id': 'fechaNacimiento'
+                    'id': 'fechaNacimiento',
+                    'onkeyup': 'mascara(this,"/",patron,true)',
                 }
             ),
             'correo': forms.EmailInput(
@@ -155,7 +156,8 @@ class MedicoForm(forms.ModelForm):
                 attrs = {
                     'class':'form-control',
                     'placeholder':'DD/MM/AAAA',
-                    'id': 'fechaNacimiento'
+                    'id': 'fechaNacimiento',
+                    'onkeyup': 'mascara(this,"/",patron,true)',
                 }
             ),
             'correo': forms.EmailInput(
@@ -176,14 +178,16 @@ class MedicoForm(forms.ModelForm):
                 attrs = {
                     'class':'form-control',
                     'placeholder':'HH:MM',
-                    'id': 'horaIng'
+                    'id': 'horaIng',
+                    'onkeyup': 'mascara(this,":",patron2,true)',
                 }
             ),
             'horaSalida': forms.TextInput(
                 attrs = {
                     'class':'form-control',
                     'placeholder':'HH:MM',
-                    'id': 'horaSalida'
+                    'id': 'horaSalida',
+                    'onkeyup': 'mascara(this,":",patron2,true)',
                 }
             ),
             'turnoMax': forms.NumberInput(

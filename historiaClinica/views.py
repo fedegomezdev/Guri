@@ -2,13 +2,16 @@ from django.shortcuts import render,redirect, get_object_or_404
 from .models import Paciente, Medico, Categoria, ObraSocial, Turno
 from .forms import PacienteForm, MedicoForm , CategoriaForm, ObraSocialForm, TurnoForm
 from django.db.models import Q
+from django.utils import timezone
+import datetime
+
 
 # Create your views here.
 
 def index(request):
     pacientes = Paciente.objects.filter(estado=True)
     medicos = Medico.objects.filter(estado = True)
-    turnos = Turno.objects.filter(estado = False)
+    turnos = Turno.objects.filter(estado = False, paciente__estado = True, medico__estado = True)
     return render(request, 'historiaClinica/index.html', {'pacientes': pacientes, 'medicos': medicos, 'turnos': turnos})
 
 def pacientes(request):
@@ -103,11 +106,13 @@ def modificarMedico(request, id):
 
 def unMedico(request,id):
     medico = Medico.objects.get(id = id)
-    turnos = Turno.objects.filter(medico = id)
+    turnos = Turno.objects.filter(medico = id, paciente__estado = True)
     if turnos.count() < 1:
         turnos = None
         return render(request, 'historiaClinica/unmedico.html', {'medico': medico, 'turnos':turnos})
     return render(request, 'historiaClinica/unmedico.html', {'medico': medico, 'turnos':turnos})
+
+
 
 #####      Categorias   ######
 def categorias(request):
@@ -153,44 +158,91 @@ def pacientesObra(request, id ):
 #### TURNOS ####
 
 def turnos(request):
-    turnos = Turno.objects.all()
+    queryset = request.GET.get('buscar')
+    turnos = Turno.objects.filter(estado = False, paciente__estado = True, medico__estado = True, horario__lte=timezone.now(), hora__lte= timezone.now() + datetime.timedelta(hours=1)  ).order_by('-horario','-hora')
+    if queryset:
+        turnos = Turno.objects.filter(Q(paciente__nombre__icontains = queryset) | Q(medico__nombre__icontains= queryset)).distinct()        
     return render(request, 'historiaClinica/turnos.html', {'turnos': turnos})   
 
 
+
 def crearTurno(request):
-    if request.method == 'POST':
-        form = TurnoForm(request.POST)
-        if form.is_valid():
-            form.save() 
-            return redirect('turnos')
-    else:
-        form = TurnoForm()
-    return render(request , 'historiaClinica/crear-turno.html' , {'form': form})  
-
-
-
-def turnoPrueba(request):
     if request.method == 'POST':   
         dniPaciente= request.POST['dniP']
         dniMedico = request.POST['dniM']
         fecha = request.POST['fecha']
         hora= request.POST['hora']
         descripcion = request.POST['descripcion']        
-        paciente = Paciente.objects.get(numeroDoc = dniPaciente)
-        medico = Medico.objects.get(numeroDoc = dniMedico)
         try:
+            paciente = Paciente.objects.get(numeroDoc = dniPaciente)
+            medico = Medico.objects.get(numeroDoc = dniMedico)
             Turno.objects.get_or_create(paciente= Paciente(id=paciente.id), medico= Medico(id=medico.id), hora = hora , horario = fecha, descripcion = descripcion)
             return redirect('turnos')
-        except:
-            error = 'Complete los campos de forma correcta'
-            return render(request, 'historiaClinica/turnoprueba.html', {'error': error})    
-        """  turno.paciente = paciente.id
-        turno.medico = medico.id
-        turno.hora = hora
-        turno.fecha = fecha
-        turno.save() """
-        
-    return render(request, 'historiaClinica/turnoprueba.html')       
+        except Paciente.DoesNotExist:              
+            error = 'Paciente inexistente'
+            return render(request, 'historiaClinica/crear-turno.html', {'error': error})
+        except Medico.DoesNotExist:
+            error2 = 'Medico inexistente'
+            return render(request, 'historiaClinica/crear-turno.html', {'error2': error2})    
+        finally:
+            print('holi')
 
         
-         
+    return render(request, 'historiaClinica/crear-turno.html')       
+
+        
+def eliminarTurno(request, id):
+    turno = Turno.objects.get(id = id)        
+    turno.estado = True
+    turno.save()
+    return redirect('turnos')
+
+
+def turnoPorPaciente(request, id):
+    paciente = Paciente.objects.get(id = id)
+    
+    if request.method=='POST':
+        dniPaciente= request.POST['dniP']
+        dniMedico = request.POST['dniM']
+        fecha = request.POST['fecha']
+        hora= request.POST['hora']
+        descripcion = request.POST['descripcion']        
+        try:
+            paciente = Paciente.objects.get(numeroDoc = dniPaciente)
+            medico = Medico.objects.get(numeroDoc = dniMedico)
+            Turno.objects.get_or_create(paciente= Paciente(id=paciente.id), medico= Medico(id=medico.id), hora = hora , horario = fecha, descripcion = descripcion)
+            return redirect('turnos')
+        except Paciente.DoesNotExist:              
+            error = 'Paciente inexistente'
+            return render(request, 'historiaClinica/crear-turno.html', {'error': error})
+        except Medico.DoesNotExist:
+            error2 = 'Medico inexistente'
+            return render(request, 'historiaClinica/crear-turno.html', {'error2': error2})    
+        finally:
+            print('holi')
+    return render(request, 'historiaClinica/crear-turno.html', {'paciente': paciente})
+
+
+def turnoPorMedico(request, id):
+    medico = Medico.objects.get(id = id)
+    if request.method=='POST':
+        dniPaciente= request.POST['dniP']
+        dniMedico = request.POST['dniM']
+        fecha = request.POST['fecha']
+        hora= request.POST['hora']
+        descripcion = request.POST['descripcion']        
+        try:
+            paciente = Paciente.objects.get(numeroDoc = dniPaciente)
+            medico = Medico.objects.get(numeroDoc = dniMedico)
+            Turno.objects.get_or_create(paciente= Paciente(id=paciente.id), medico= Medico(id=medico.id), hora = hora , horario = fecha, descripcion = descripcion)
+            return redirect('turnos')
+        except Paciente.DoesNotExist:              
+            error = 'Paciente inexistente'
+            return render(request, 'historiaClinica/crear-turno.html', {'error': error})
+        except Medico.DoesNotExist:
+            error2 = 'Medico inexistente'
+            return render(request, 'historiaClinica/crear-turno.html', {'error2': error2})    
+        finally:
+            print('holi')
+    return render(request, 'historiaClinica/crear-turno.html', {'medico': medico}) 
+  

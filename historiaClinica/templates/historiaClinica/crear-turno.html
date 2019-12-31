@@ -1,56 +1,65 @@
 {% extends 'historiaClinica/index.html' %}
 {% load static %}
-{% block titulo %} Nuevo turno {% endblock titulo %}
-{% block tituloPrincipal %} Nuevo turno {% endblock tituloPrincipal %}
-{% block contenidoPrincipal %}
-
-<div class="card">
-    <div class="card-header">
-        <strong>Formulario de Turno</strong>
+{% block titulo %} Turnos {% endblock titulo %}
+{% block tituloPrincipal %} Turnos  {% endblock tituloPrincipal %}
+{% block contenidoPrincipal %} 
+    {% if error %} <p class="text-danger">{{error}}</p> {% endif %}
+    {% if error2 %} <p class="text-danger">{{error2}}</p> {% endif %}
+    <form method="POST" onsubmit="return validar()">
+    {% csrf_token %}
+    <div class="row form-group">
+        <div class="col col-md-3 ">Paciente</div>
+        <div class="col-12 col-md-9">
+            <input type="text" id="dnip" placeholder="Dni del Paciente" value="{{paciente.numeroDoc}}" name="dniP" class="form-control col col-md-6 mr-2">
+        </div>
+    </div> 
+    <div class="row form-group">
+        <div class="col col-md-3 ">Medico</div>
+        <div class="col-12 col-md-9">
+            <input type="text" id="dnim" value="{{medico.numeroDoc}}" placeholder="Dni del Médico" name="dniM" class="form-control col col-md-6 mr-2">
+        </div>
+    </div>  
+    <div class="row form-group">
+        <div class="col col-md-3 ">Fecha</div>
+        <div class="col-12 col-md-9">
+            <input type="date" id="fecha" placeholder="Fecha" name="fecha" class="form-control col col-md-6 mr-2">
+        </div>
+    </div>  
+    <div class="row form-group">
+        <div class="col col-md-3 ">Hora</div>
+        <div class="col-12 col-md-9">
+            <input type="text" id="hora" placeholder="Hora" name="hora" class="form-control col col-md-6 mr-2" onkeyup="mascara(this,':',patron2,true)" >
+        </div>
+    </div>  
+    <div class="row form-group">
+        <div class="col col-md-3 "> Descripción </div>
+        <div class="col-12 col-md-9">
+            <textarea id="descripcion" placeholder="Descripción"  cols="5" rows="5" name="descripcion" class="form-control col col-md-6 mr-2"></textarea>
+        </div>
+    </div>   
+    <div class="row form-group">
+        <div class="col-12 col-md-9">
+            <button type="submit" onclick="return confirm('Confirmar?')" class="align-center btn btn-lg btn-primary"> Aceptar</button>
+        </div>
     </div>
-     <div class="card-body card-block">
-        <form method="post" class="form-horizontal ">
-            {% csrf_token %}   
-            
-            {% if form.errors %}
-            <p class="text-danger">{{form.errors}}</p>
-            {% endif %}
-
-            <div class="row form-group">
-                <div class="col col-md-3 ">{{ form.paciente.label }}</div>
-                <div class="col-12 col-md-9">{{ form.paciente }}</div>
-            </div>
-            <div class="row form-group">
-                <div class="col col-md-3">{{ form.medico.label }}</div>
-                <div class="col-12 col-md-9">{{ form.medico }}</div>
-            </div>
-            <div class="row form-group">
-                <div class="col col-md-3">{{ form.horario.label }}</div>
-                <div class="col-12 col-md-9">{{ form.horario }}</div>
-            </div>
-            <div class="row form-group">
-                <div class="col col-md-3">{{ form.hora.label }}</div>
-                <div class="col-12 col-md-9">{{ form.hora }}</div>
-            </div>
-            <div class="row form-group">
-                <div class="col col-md-3">{{ form.descripcion.label }}</div>
-                <div class="col-12 col-md-9">{{ form.descripcion }}</div>
-            </div>
-          
-
-            <div class="text-center">
-                <button type="submit" class="btn btn-primary">Aceptar</button>
-                <button type="reset" class="btn btn-danger">Cancelar</button>
-            </div>
-        
-    </div>
-    </div>
-
+    
     </form>
-    
+
     <script>
-    
-    var patron = new Array(2,2,4)
+        function validar(){
+            var dnip = document.getElementById("dnip").value;
+            var dnim = document.getElementById("dnim").value;
+            var fecha = document.getElementById("fecha").value;
+            var hora = document.getElementById("hora").value;
+            var descripcion = document.getElementById("descripcion").value;
+
+            if(dnip.trim() === "" || dnim.trim() === "" || fecha.trim() === "" || hora.trim() === "" || descripcion.trim() === "" || isNaN(dnip) || isNaN(dnim)){
+                alert("Complete todos los campos de manera correcta");
+                return false;          
+            }
+        }
+
+     
     var patron2 = new Array(2,2)
 
     function mascara(d,sep,pat,nums){
@@ -90,8 +99,7 @@
         d.valant = val
         }
 }
-	  
-    </script>
 
+    </script>
 
 {% endblock contenidoPrincipal %}
