@@ -33,7 +33,7 @@
           
               <tr>
                   <td>{{obra.id}}</td>
-                  <td><input type="text" value="{{obra.nombre}}" id="nombre" style="border: none;" disabled ></td>
+                  <td>{{obra.nombre}}</td>
                  
                   <td>
                     <a href="{% url 'pacientes-obrasocial' obra.id %}" class="btn btn-success mr-2">Ver Pacientes</a> 
@@ -53,24 +53,13 @@
         
         
         function mostrar(){
-            form.hidden = false;
-        }
-        function ocultar(){
-            form.hidden = true
-        }
-
-        function modificar(){
-            
-          document.getElementById("nombre").disabled = false ;
-
-            if (modifica.hidden == false) { 
-              modifica.hidden = true
-            }else { 
-              modifica.hidden = false;
+            if(form.hidden == false){
+              form.hidden = true;
+            }else {
+              form.hidden = false
             }
-
-           
         }
+       
             
     </script>
  

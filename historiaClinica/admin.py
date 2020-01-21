@@ -9,6 +9,5 @@ admin.site.register(Categoria)
 admin.site.register(Historial)
 admin.site.register(ObraSocial)
 
-
-
+admin.site.site_header = 'Administración de Salud'
 

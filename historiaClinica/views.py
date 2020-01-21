@@ -158,8 +158,9 @@ def pacientesObra(request, id ):
 #### TURNOS ####
 
 def turnos(request):
+    #Turno.objects.filter(horario__lt= timezone.now() - datetime.timedelta(hours=6)).update(estado = True)
     queryset = request.GET.get('buscar')
-    turnos = Turno.objects.filter(estado = False, paciente__estado = True, medico__estado = True, horario__lte=timezone.now(), hora__lte= timezone.now() + datetime.timedelta(hours=1)  ).order_by('-horario','-hora')
+    turnos = Turno.objects.filter(estado = False, paciente__estado = True, medico__estado = True, horario=timezone.now(), hora__lte= timezone.now() - datetime.timedelta(hours=2) , hora__gte= timezone.now() - datetime.timedelta(hours=4)).order_by('-horario','-hora')
     if queryset:
         turnos = Turno.objects.filter(Q(paciente__nombre__icontains = queryset) | Q(medico__nombre__icontains= queryset)).distinct()        
     return render(request, 'historiaClinica/turnos.html', {'turnos': turnos})   
@@ -196,6 +197,37 @@ def eliminarTurno(request, id):
     turno.estado = True
     turno.save()
     return redirect('turnos')
+
+
+def modificarTurno(request, id):
+    turno = Turno.objects.get(id = id)
+    if request.method == 'POST':   
+        dniPaciente= request.POST['dniP']
+        dniMedico = request.POST['dniM']
+        fecha = request.POST['fecha']
+        hora= request.POST['hora']
+        descripcion = request.POST['descripcion']
+               
+        try:
+            paciente = Paciente.objects.get(numeroDoc = dniPaciente)
+            medico = Medico.objects.get(numeroDoc = dniMedico)
+            turno.paciente =  paciente
+            turno.medico = medico
+            turno.horario = fecha
+            turno.hora = hora
+            turno.descripcion = descripcion
+            turno.save()
+            #Turno.objects.get_or_create(paciente= Paciente(id=paciente.id), medico= Medico(id=medico.id), hora = hora , horario = fecha, descripcion = descripcion)
+            return redirect('turnos')
+        except Paciente.DoesNotExist:              
+            error = 'Paciente inexistente'
+            return render(request, 'historiaClinica/modificar-turno.html', {'error': error})
+        except Medico.DoesNotExist:
+            error2 = 'Medico inexistente'
+            return render(request, 'historiaClinica/modificar-turno.html', {'error2': error2})    
+        finally:
+            print('holi')
+    return render(request, 'historiaClinica/modificar-turno.html', {'turno':turno})
 
 
 def turnoPorPaciente(request, id):

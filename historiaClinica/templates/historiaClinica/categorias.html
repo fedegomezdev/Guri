@@ -4,7 +4,7 @@
 {% block tituloPrincipal %} Categorias {% endblock tituloPrincipal %}
 {% block contenidoPrincipal %} 
 
-<button class="btn btn-primary" onclick="mostrar()">Crear Nueva</button>
+<button id="boton" class="btn btn-primary" onclick="mostrar()">Crear Nueva</button>
 
 <form hidden id="formulario" method="POST">
 {% csrf_token %}     
@@ -47,12 +47,16 @@
         var form = document.getElementById("formulario")
         
         function mostrar(){
-            form.hidden = false;
+            if(form.hidden == false){
+              form.hidden = true;
+            }else {
+              form.hidden = false
+            }
         }
-        function ocultar(){
-            form.hidden = true
-        }
-            
+       
+       
+
+
     </script>
  
 

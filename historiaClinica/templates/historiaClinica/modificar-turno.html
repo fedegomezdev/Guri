@@ -1,0 +1,105 @@
+{% extends 'historiaClinica/index.html' %}
+{% load static %}
+{% block titulo %} Turnos {% endblock titulo %}
+{% block tituloPrincipal %} Turnos  {% endblock tituloPrincipal %}
+{% block contenidoPrincipal %} 
+    {% if error %} <p class="text-danger">{{error}}</p> {% endif %}
+    {% if error2 %} <p class="text-danger">{{error2}}</p> {% endif %}
+    <form method="POST" onsubmit="return validar()">
+    {% csrf_token %}
+    <div class="row form-group">
+        <div class="col col-md-3 ">Paciente</div>
+        <div class="col-12 col-md-9">
+            <input type="text" id="dnip" placeholder="Dni del Paciente" value="{{turno.paciente.numeroDoc}}" name="dniP" class="form-control col col-md-6 mr-2">
+        </div>
+    </div> 
+    <div class="row form-group">
+        <div class="col col-md-3 ">Medico</div>
+        <div class="col-12 col-md-9">
+            <input type="text" id="dnim" value="{{turno.medico.numeroDoc}}" placeholder="Dni del Médico" name="dniM" class="form-control col col-md-6 mr-2">
+        </div>
+    </div>  
+    <div class="row form-group">
+        <div class="col col-md-3 ">Fecha</div>
+        <div class="col-12 col-md-9">
+            <input type="date" id="fecha" placeholder="Fecha" name="fecha" value="{{turno.horario}}" class="form-control col col-md-6 mr-2">
+        </div>
+    </div>  
+    <div class="row form-group">
+        <div class="col col-md-3 ">Hora</div>
+        <div class="col-12 col-md-9">
+            <input type="text" id="hora" placeholder="Hora" value="{{turno.hora}}" name="hora" class="form-control col col-md-6 mr-2" onkeyup="mascara(this,':',patron2,true)" >
+        </div>
+    </div>  
+    <div class="row form-group">
+        <div class="col col-md-3 "> Descripción </div>
+        <div class="col-12 col-md-9">
+            <textarea id="descripcion" placeholder="Descripción" cols="5" rows="5" name="descripcion" class="form-control col col-md-6 mr-2">{{turno.descripcion}}</textarea>
+        </div>
+    </div>   
+    <div class="row form-group">
+        <div class="col-12 col-md-9">
+            <button type="submit" onclick="return confirm('Confirmar?')" class="align-center btn btn-lg btn-primary"> Aceptar</button>
+        </div>
+    </div>
+    
+    </form>
+
+    <script>
+        function validar(){
+            var dnip = document.getElementById("dnip").value;
+            var dnim = document.getElementById("dnim").value;
+            var fecha = document.getElementById("fecha").value;
+            var hora = document.getElementById("hora").value;
+            var descripcion = document.getElementById("descripcion").value;
+
+            if(dnip.trim() === "" || dnim.trim() === "" || fecha.trim() === "" || hora.trim() === "" || descripcion.trim() === "" || isNaN(dnip) || isNaN(dnim)){
+                alert("Complete todos los campos de manera correcta");
+                return false;          
+            }
+        }
+
+     
+    var patron2 = new Array(2,2)
+
+    function mascara(d,sep,pat,nums){
+        if(d.valant != d.value){
+        val = d.value
+        largo = val.length
+        val = val.split(sep)
+        val2 = ''
+        for(r=0;r<val.length;r++){
+            val2 += val[r]	
+        }
+        if(nums){
+            for(z=0;z<val2.length;z++){
+                if(isNaN(val2.charAt(z))){
+                    letra = new RegExp(val2.charAt(z),"g")
+                    val2 = val2.replace(letra,"")
+                }
+            }
+        }
+        val = ''
+        val3 = new Array()
+        for(s=0; s<pat.length; s++){
+            val3[s] = val2.substring(0,pat[s])
+            val2 = val2.substr(pat[s])
+        }
+        for(q=0;q<val3.length; q++){
+            if(q ==0){
+                val = val3[q]
+            }
+            else{
+                if(val3[q] != ""){
+                    val += sep + val3[q]
+                    }
+            }
+        }
+        d.value = val
+        d.valant = val
+        }
+}
+
+    </script>
+
+{% endblock contenidoPrincipal %}

@@ -115,6 +115,8 @@ class Turno(models.Model):
     def __str__(self):
         return '%s %s' %(self.paciente, self.horario)
 
+    
+
 
 
 class Historial(models.Model):

@@ -23,4 +23,5 @@ urlpatterns = [
     path('turnos/eliminar-turno/<int:id>', views.eliminarTurno , name='eliminar-turno'),
     path('turnos/crear-turno/<int:id>', views.turnoPorPaciente , name='turnoPorPaciente'),
     path('turnos/crear-turno-medico/<int:id>', views.turnoPorMedico , name='turnoPorMedico'),
+    path('turnos/modificar-turno/<int:id>', views.modificarTurno , name='modificar-turno')
 ]
