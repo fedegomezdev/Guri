@@ -57,6 +57,19 @@
             </tbody>
           </table>
         </div>
+        <div class="row">
+          <div class="col-lg-6 m-3">
+            
+              {% if medicos.has_previous %}
+              <a class="btn btn-warning" href="?page={{medicos.previous_page_number}}{% if request.GET.search%}&q={{request.GET.search}}{% endif %}">Atrás</a>
+              {% endif %}
+
+              {% if medicos.has_next %}          
+              <a  class="btn btn-warning" href="?page={{medicos.next_page_number}}{% if request.GET.search%}&q={{request.GET.search}}{% endif %}">Siguiente</a>
+              {% endif %}
+            
+          </div>
+        </div>
         <!-- /.card-body -->
       </div>
       <!-- /.card -->

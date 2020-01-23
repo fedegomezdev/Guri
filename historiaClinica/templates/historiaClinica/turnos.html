@@ -12,8 +12,11 @@
               <div class="card-header">
                 <h3 class="card-title">Turnos</h3>
                 <a class="btn btn-primary ml-5" href="{% url 'crear-turno' %}">Nuevo turno</a>
+                
+
                 <div class="card-tools">
                   <form method="GET">
+                    
                   <div class="input-group input-group-sm" style="width: 250px;">
                     <input type="text" name="buscar" class="form-control float-right" placeholder="Buscar" value="{{request.GET.buscar}}">
       
@@ -81,6 +84,21 @@
                   </tbody>
                 </table>
               </div>
+
+              <div class="row">
+                <div class="col-lg-6 m-3">
+                  
+                    {% if turnos.has_previous %}
+                    <a class="btn btn-warning" href="?page={{turnos.previous_page_number}}{% if request.GET.search%}&q={{request.GET.search}}{% endif %}">Atrás</a>
+                    {% endif %}
+      
+                    {% if turnos.has_next %}          
+                    <a  class="btn btn-warning" href="?page={{turnos.next_page_number}}{% if request.GET.search%}&q={{request.GET.search}}{% endif %}">Siguiente</a>
+                    {% endif %}
+                  
+                </div>
+              </div>
+
               <!-- /.card-body -->
             </div>
             <!-- /.card -->
